@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counters</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <style>
+        button {
+            height: 40px;
+            width : 40px;
+            margin: 10px;
+        }
+
+        Counters {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div id = "root">
+
+    </div>
+    <script type = "text/babel">
+        function Counter (props){
+            let number = props.number;
+            let counterValue = props.counterValue;
+            let counterNum = props.counterNum;
+            let [time,setTime] = React.useState("0");
+
+            if(number == counterNum && time != counterValue) {
+                setTime(counterValue);
+                props.resetValues();
+            }
+
+            const increaseTime = () => {
+                let oldTime = Number(time);
+                let newTime = oldTime + 1;
+                setTime(newTime);
+            }
+            const decreaseTime = () => {
+                let oldTime = Number(time);
+                let newTime = oldTime - 1;
+                setTime(newTime);
+            }
+            return (
+                <div>
+                    <button onClick = {decreaseTime}>-</button>
+                    <label>{time}</label>
+                    <button onClick = {increaseTime}>+</button>
+                    </div>
+                    )
+                }
+        function Counters(props) {
+            let counterNum = props.counterNum;
+            let counterValue = props.counterValue;
+            let resetValues = props.resetValues;
+            return (
+                <div>
+                    <h1> Counters </h1>
+                    <Counter number = {1} counterNum = {counterNum} 
+                    counterValue = {counterValue} resetValues = {resetValues}/>
+                    <Counter number = {2} counterNum = {counterNum} 
+                    counterValue = {counterValue} resetValues = {resetValues}/>
+                    <Counter number = {3} counterNum = {counterNum} 
+                    counterValue = {counterValue} resetValues = {resetValues}/>
+                </div>
+            )
+        }
+        function InputBoxes(props) {
+            let [cNo,setcNo] = React.useState();
+            let [cValue,setcValue] = React.useState();
+            const counterNumberSet = (e) => {
+                setcNo(e.target.value);
+            }
+            const counterValueSet = (e) => {
+                setcValue(e.target.value);
+            }
+            const setResetCounter = props.setResetCounter;
+
+            const setValues = () => {
+                setResetCounter(cNo,cValue);
+            }
+            return (
+                <div>
+                    <h1> Reset Boxes </h1>
+                    <div>
+                        <label> Enter The Counter Number </label>
+                        <input type="text" name="" id="" value = {cNo} onChange = {counterNumberSet} />
+                    </div>
+                        <label> Enter The Value </label>
+                        <input type="text" name="" id="" value = {cValue} onChange = {counterValueSet} />
+                    <div>
+                        <button onClick = {setValues}> Reset Counter </button>
+                    </div>
+                </div>
+            )
+        }
+
+        function App() {
+            const [counterNum,setcounterNum] = React.useState("");
+            const [counterValue,setCounterValue] = React.useState("");
+
+            const setResetCounter = (cNo,cVal) => {
+                setcounterNum(cNo);
+                setCounterValue(cVal);
+            }
+
+            const resetValues = () => {
+                setCounterValue("");
+                setcounterNum("");
+            }
+            return (
+                <div>
+                    <h1> Reset Counter App </h1>
+                    <hr/>
+                    <InputBoxes setResetCounter = {setResetCounter}></InputBoxes>
+                    <hr/>
+                    <Counters counterNum = {counterNum} counterValue = {counterValue} resetValues = {resetValues}></Counters>
+                </div>
+            )
+        }
+        ReactDOM.render(<App/>,document.getElementById("root"));
+    </script>
+</body>
+</html>
